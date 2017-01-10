@@ -1,60 +1,90 @@
-#include "card.h"
 #include <iostream>
 #include <fstream>
-#include <vector>
-
+#include "card.h"
+#include "multicard.h"
 using namespace std;
 
 int main(){
-
-    string atype;
-    string aname;
-    string acolor;
-    char choice;
-    int acost;
-    bool iDeck;
-    const char * path = "/home/lexi/magicproject/output.csv";
+    const char * path = "/home/lexipiatt/MagicProject/MagicProject-master/output.csv";
     fstream fout;
+    string aName, aType, aColor;
+    int aCost = 0; 
+    bool iDeck = false;
+    bool flag = false;
+    int mC[7] = {0,0,0,0,0,0,0};
+    vector<string>cC; 
+    char choice2 = 'l';
+    char choice1 = 'j';
+    char choice3 = 'j';
     fout.open(path,ios::app);
     if(!fout){
-    cout << "output failed." << endl;
+        cout << "Opening file failed." << endl;
     }
-    cout << "welcome to the database\n";
-    cout << "What is the name of the card?" << endl;
-    getline(cin, aname);
-    cout <<"What is the color?" << endl;
-    getline(cin, acolor);
-    cout << "what type is it?" << endl;
-    getline(cin, atype);
-    cout << "is it currently in a deck? (y/n)" << endl;
-    cin >> choice;
-    if((choice == 'y')||(choice == 'Y'))
-        iDeck = true;
-    if((choice == 'n')||(choice == 'N'))
-        iDeck = false;
-    cout << "enter the cost of the card." << endl;
-    cin >> acost;
+    
+    cout << "Welcome to your MTG Database." << endl;
+    do{  
+        cout << "Is the card a multicolor card? (y/n)" << endl;
+        cin >> choice1;
 
-    Card anotherCard(aname, acost, iDeck, atype, acolor);
-    cout << "Name: " << anotherCard.getName() << endl;
-    cout << "Cost: " << anotherCard.getCost() << endl;
-    if(anotherCard.getDeck()){
-        cout << "It is in a Deck." << endl;
+        if((choice1 == 'y') || (choice1 == 'Y')){
+            cout << "Please enter the name of the card." << endl;
+            cin.ignore();
+            getline(cin, aName);
+            cout << "Please enter the type of card. (instant, sorcery.. etc)" << endl;
+            getline(cin, aType);
+            cout << "How many colors is the card?" << endl;
+            int numC = 0;
+            cin >> numC;
+            cin.ignore();
+            cout << "enter the colors of the card. press enter in between." << endl;
+            for(int i = 0; i < numC; i++){
+                getline(cin, aColor);
+                cC.push_back(aColor);
+            }      
+            cout << "Is the card currently in a deck?(y/n)" << endl;
+            cin >> choice2;
+            if((choice2 == 'y') || (choice2 == 'Y')){
+                iDeck = true;
+            }
+            else if((choice2 == 'n') || (choice2 == 'N')){
+                iDeck = false;
+            }
+            MultiCard nCard(mC, aName, aType, cC, iDeck);
+            nCard.setMCost();
+            fout << nCard; 
+        }
+        if((choice1 == 'n') || (choice1 == 'N')){
+            cout << "Please enter the name of the card." << endl;
+            cin.ignore();
+            getline(cin, aName);
+            cout << "Please enter the type of card. (instant, sorcery.. etc)" << endl;
+            getline(cin, aType);
+            cout << "What is the color on the card?" << endl;
+            getline(cin, aColor);
+            cout << "Is the card currently in a deck?" << endl;
+            cin >> choice2;
+            if((choice2 == 'y') || (choice2 == 'Y')){
+                iDeck = true;
+            }   
+            else if((choice2 == 'n') || (choice2 == 'N')){
+                iDeck = false;
+            }
+            cout << "What is the cost of the card?" << endl;
+            cin >> aCost;
+        
+            Card aCard(aName, aCost, iDeck, aType, aColor);
+            fout << aCard;
+        }
+    cout << "Do you have anymore cards to enter? (y/n)" <<  endl;
+    cin >> choice3;
+    if((choice3 == 'y') || (choice3 == 'Y')){
+        flag = true;
     }
-    else if(!anotherCard.getDeck()){
-        cout << "It is not in a Deck" << endl;
-    }
-    cout << "type: " << anotherCard.getCardType() << endl;
-    cout << "color: " << anotherCard.getColor() << endl;
+    else if((choice3 == 'n') || (choice3 == 'N')){
+        flag = false;
+    }   
+    }while(flag); 
     
-    char choice2;
-    cout << "are you done entering cards? (y/n)" << endl;
-    cin >> choice2;
-  
-    if(choice2 == 'y'){
-       fout << anotherCard;
-    }
-    
-  return 1;
+return 1;
 }
-
+        

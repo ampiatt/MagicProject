@@ -11,12 +11,12 @@ Card::Card(){
     color = "";
 }
 
-Card::Card(string aName, int aCost, bool iDeck, string cardType, string cColor){
+Card::Card(string aName, int aCost, bool iDeck, string cardType, string aColor){
     name = aName;
     cost = aCost;
     inDeck = iDeck;
     typeOfCard = cardType;
-    color = cColor;
+    color = aColor;
 }
 
 void Card::setName(string aName){
@@ -39,8 +39,8 @@ void Card::setColor(string nColor){
     color = nColor;
 }
 
-
 ostream& operator <<(ostream& out, const Card& cards){
+    out << "Single" << endl;
     out << cards.name << endl;
     out << cards.cost << endl;
     if(cards.inDeck){

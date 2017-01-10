@@ -16,11 +16,11 @@ string name;
 int cost;
 bool inDeck = false;
 string typeOfCard;
-string color; 
+string color;
 
 public:
 Card();
-Card(string aName, int aCost, bool iDeck, string cardType, string cColor);
+Card(string aName, int aCost, bool iDeck, string cardType, string aColor);
 
 void setName(string aName);
 void setCost(int aCost);
@@ -28,8 +28,9 @@ void setInDeck(bool deck);
 void setTypeOfCard(string cardType);
 void setColor(string nColor);
 
-void printCard(ofstream &out, Card cards);
 
+void printCard(ofstream &out, Card cards);
+// 
 string getName(){return name;}
 int getCost(){return cost;}
 bool getDeck(){return inDeck;}
